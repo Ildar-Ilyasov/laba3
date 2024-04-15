@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 struct Student
 {
@@ -6,7 +6,7 @@ struct Student
     public string Group;
     public int[] Grades;
 
-    public double AverageGrade()
+    public double GetAverageGrade()
     {
         double sum = 0;
         foreach (var grade in Grades)
@@ -16,7 +16,6 @@ struct Student
         return sum / Grades.Length;
     }
 }
-
 class Program
 {
     static void Main(string[] args)
@@ -30,13 +29,23 @@ class Program
         students[5] = new Student { Name = "Кудимов В.А.", Group = "Группа 3", Grades = new int[] { 3, 3, 3, 4, 3 } };
         students[6] = new Student { Name = "Чекушин Н.С.", Group = "Группа 1", Grades = new int[] { 4, 5, 5, 4, 5 } };
 
-
-        Array.Sort(students, (s1, s2) => s1.AverageGrade().CompareTo(s2.AverageGrade()));
+        for (int i = 0; i < students.Length - 1; i++)
+        {
+            for (int j = 0; j < students.Length - 1 - i; j++)
+            {
+                if (students[j].GetAverageGrade() > students[j + 1].GetAverageGrade())
+                {
+                    Student temp = students[j];
+                    students[j] = students[j + 1];
+                    students[j + 1] = temp;
+                }
+            }
+        }
 
         Console.WriteLine("Студенты, упорядоченные по возрастанию среднего балла:");
         foreach (var student in students)
         {
-            Console.WriteLine($"Студент: {student.Name}, Группа: {student.Group}, Средний балл: {student.AverageGrade()}");
+            Console.WriteLine($"Студент: {student.Name}, Группа: {student.Group}, Средний балл: {student.GetAverageGrade()}");
         }
     }
 }
